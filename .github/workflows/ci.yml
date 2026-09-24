@@ -1,0 +1,31 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'chore/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify repository structure
+        run: |
+          echo "Listing repository files..."
+          ls -la
+          test -f README.md && echo "README.md exists."
+          test -f src/tasks.js && echo "src/tasks.js exists."
+
+      - name: Run syntax and file integrity checks
+        run: |
+          echo "Checking JavaScript syntax..."
+          node -c src/tasks.js
